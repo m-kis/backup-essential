@@ -1,4 +1,4 @@
-# Maintenance du serveur
+# Maintenance du serveur et automatisation de backup
 # Auteur: M-KIS
 
 import datetime
