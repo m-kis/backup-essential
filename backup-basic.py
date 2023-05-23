@@ -1,6 +1,5 @@
 # Maintenance du serveur et automatisation de backup
 # Auteur: M-KIS
-
 import datetime
 import subprocess
 
@@ -8,30 +7,21 @@ def backup_files(server, destination):
     # Code pour effectuer la sauvegarde des fichiers sur le serveur
     pass
 
-def backup_mysql(server, database, destination):
+def backup_mysql_database(server, database, username, password, destination):
     # Code pour effectuer la sauvegarde de la base de données MySQL sur le serveur
-    backup_cmd = f"mysqldump --user=username --password=password {database} > {destination}/backup_database_{database}.sql"
-    subprocess.run(backup_cmd, shell=True)
+    pass
 
-def backup_mongodb(server, database, destination):
+def backup_mongodb_database(server, database, username, password, destination):
     # Code pour effectuer la sauvegarde de la base de données MongoDB sur le serveur
-    backup_cmd = f"mongodump --host {server} --db {database} --out {destination}/backup_database_{database}"
-    subprocess.run(backup_cmd, shell=True)
-
-def backup_logs(server, destination):
-    # Code pour effectuer la sauvegarde des fichiers journaux sur le serveur
-    backup_cmd = f"cp /var/log/* {destination}/logs_backup/"
-    subprocess.run(backup_cmd, shell=True)
+    pass
 
 def update_packages(server):
     # Code pour mettre à jour les packages du serveur
-    update_cmd = "apt-get update && apt-get upgrade -y"
-    subprocess.run(update_cmd, shell=True)
+    pass
 
 def clean_logs(server):
     # Code pour nettoyer les fichiers journaux du serveur
-    clean_cmd = "rm -rf /var/log/*"
-    subprocess.run(clean_cmd, shell=True)
+    pass
 
 # Définir la date actuelle pour le nom du fichier de sauvegarde
 date = datetime.datetime.now().strftime("%Y-%m-%d")
@@ -43,16 +33,19 @@ destination = input("Veuillez entrer le chemin de destination des sauvegardes : 
 # Effectuer la sauvegarde des fichiers
 backup_files(server, f"{destination}/backup_files_{date}.tar.gz")
 
-# Effectuer la sauvegarde de la base de données MySQL
+# Sauvegarde de la base de données MySQL
+mysql_host = input("Veuillez entrer l'adresse IP ou le nom du serveur MySQL : ")
 mysql_database = input("Veuillez entrer le nom de la base de données MySQL : ")
-backup_mysql(server, mysql_database, f"{destination}/backup_database_{mysql_database}_{date}.sql")
+mysql_username = input("Veuillez entrer le nom d'utilisateur MySQL : ")
+mysql_password = input("Veuillez entrer le mot de passe MySQL : ")
+backup_mysql_database(mysql_host, mysql_database, mysql_username, mysql_password, f"{destination}/backup_mysql_{mysql_database}_{date}.sql")
 
-# Effectuer la sauvegarde de la base de données MongoDB
-mongodb_database = input("Veuillez entrer le nom de la base de données MongoDB : ")
-backup_mongodb(server, mongodb_database, f"{destination}/backup_database_{mongodb_database}_{date}")
-
-# Effectuer la sauvegarde des fichiers journaux
-backup_logs(server, f"{destination}/backup_logs_{date}.tar.gz")
+# Sauvegarde de la base de données MongoDB
+mongo_host = input("Veuillez entrer l'adresse IP ou le nom du serveur MongoDB : ")
+mongo_database = input("Veuillez entrer le nom de la base de données MongoDB : ")
+mongo_username = input("Veuillez entrer le nom d'utilisateur MongoDB : ")
+mongo_password = input("Veuillez entrer le mot de passe MongoDB : ")
+backup_mongodb_database(mongo_host, mongo_database, mongo_username, mongo_password, f"{destination}/backup_mongodb_{mongo_database}_{date}.tar.gz")
 
 # Mettre à jour les packages du serveur
 update_packages(server)
